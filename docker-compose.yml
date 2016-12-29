@@ -1,0 +1,29 @@
+version: "2"
+services:
+
+  cosmog-common:
+    build: .
+    image: cosmog
+
+  cosmog-server:
+    extends:
+      service: cosmog-common
+    ports:
+      - "6010:6010"
+    volumes:
+      - ../cosmog/src:/app/src
+      - ../cosmog/bin:/app/bin
+      - ../cosmog/index.html:/app/index.html
+    command: yarn run server:dev
+
+  cosmog-client:
+    extends:
+      service: cosmog-common
+    depends_on: 
+      - cosmog-server
+    ports:
+      - "6020:6020"
+    volumes:
+      - ../cosmog/src:/app/src
+      - ../cosmog/bin:/app/bin
+    command: yarn run client:dev
